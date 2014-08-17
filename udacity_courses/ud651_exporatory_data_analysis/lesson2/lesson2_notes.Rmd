@@ -1,0 +1,386 @@
+UD651 Lesson 2 Notes by mrandrewandrade
+========================================================
+
+UD651 Udacity's Exploratory Data Analysis Course Notes by Andrew Andrade || mrandrewandrade.com  || March 22nd, 2014 || (CC BY-NC 2.5)
+
+### Lesson 2 Outline:
+
+[Installing R and Rstudio](#P1)      
+
+
+[Example1 ](#E1): c, nchar   
+[Example2 ](#E2): data, names, ?, str, dim, row.names, head, tail, $  
+[Example3 ](#E3): getwd, setwd, read.csv, subset, []    
+[Example4 ](#E4): plot, summary, boolean operators, add and remove variables, ifelse, rm   
+[Example5 ](#E5): factors, table, rearrange table    
+
+[Appendix ](#Appendix):     
+Dealing with Untidy Data   
+R Markdown    
+Free R Resources and Help     
+
+***
+
+### <a name="P1"></a>Install R and RStudio
+
+Download and install the R programming language FIRST at http://cran.rstudio.com. 
+
+After you install R, you can download and install RStudio from http://www.rstudio.com.
+
+RStudio Layout Guide:   
+http://dss.princeton.edu/training/RStudio101.pdf
+
+***
+
+### <a name="E1"></a>Example 1: Getting Started
+Learn to use: c, nchar
+
+
+```{r}
+#Reset the workspace
+rm(list = ls(all = TRUE)) 
+
+# Store names in a vector
+names <- c("Chris Saden", "Lauren Castellano",
+              "Sarah Spikes","Dean Eckles",
+              "Andy Brown", "Moira Burke",
+              "Kunal Chawla")
+
+# Display contents of vector
+names
+
+# Store 1 to 10 then 1 to 20 in a vector
+numbers <- c(1:10)
+
+#display
+numbers
+
+#append 11:20
+numbers <- c(numbers, 11:20)
+
+#display
+numbers
+```
+
+
+#### Display number of characters using nchar:
+```{r}
+#Reset the workspace
+rm(list = ls(all = TRUE))
+
+udacious <- c("Chris Saden", "Lauren Castellano",
+              "Sarah Spikes","Dean Eckles",
+              "Andy Brown", "Moira Burke",
+              "Kunal Chawla", "Andrew Andrade")
+
+# vector that contains the number of characters
+# for each of the names in udacious, including my name.
+nchar_output = nchar(udacious)
+nchar_output
+
+# Check if name in vector contains exactly 11 characters
+nchar_output == 11
+
+# Output names with 11 charaters only
+udacious[nchar_output  == 11]
+
+```
+### <a name="E2"></a>Example 2: Understanding Dataframes
+
+Learn to use: data, names, ?, str, dim, row.names, head, tail, $.
+
+```{r}
+
+#Reset the workspace
+rm(list = ls(all = TRUE))
+
+#load mtcars data
+data(mtcars)
+#display the variable names in mtcars
+names(mtcars)
+#display help
+?mtcars
+#display data frame in table form
+mtcars
+
+#display structur of data fram
+str(mtcars)
+
+#displays the size of the data frame
+dim(mtcars)
+
+#help for row names
+?row.names
+
+# Change the row names of the cars to numbers.
+row.names(mtcars) <- c(1:32)
+# Show changes:
+mtcars
+
+#reload the data to reset row names
+data(mtcars)
+
+#display first 6 entries (default)
+head(mtcars)
+
+#display first 10 entries
+head(mtcars, 10)
+
+#display last 3 entries
+tail(mtcars, 3)
+
+#Access an individual variable (or column) from the data frame
+mtcars$mpg
+#Find average of that column
+mean(mtcars$mpg)
+
+```
+
+#### Note: R uses 1 to start indexing (AND NOT ZERO BASED INDEXING as is true of many other programming languages.)
+
+### <a name="E3"></a>Example 3: Read and Subset Data
+
+Learn to use: getwd, setwd, read.csv, subset, []   
+Reference: http://www.statmethods.net/management/subset.html   
+
+```{r}
+#Reset the workspace
+rm(list = ls(all = TRUE)) 
+
+#Get working directory
+getwd()
+
+#Set working directory (change to yours)
+setwd('~/UD651-Course-Notes/Course Notes/lesson2/')
+
+#Read in the state info data
+statesInfo <-read.csv('stateData.csv')
+
+
+#One method to store subset the states in region 1 
+stateSubset <- subset(statesInfo, 1 == state.region )
+
+
+#Another method to subset the states in region 1
+stateSubsetBraket <- statesInfo[statesInfo$state.region==1, ]
+
+
+```
+
+### <a name="E4"></a>Example 4: Playing with the cars data set
+
+Learn to use: plot, summary, boolean operators, add and remove variables, ifelse, rm
+
+
+```{r}
+#Reset the workspace
+rm(list = ls(all = TRUE)) 
+
+#look at prepacked cars data
+?cars
+
+#structure of cars
+str(cars)
+
+```
+
+Plot:
+
+```{r fig.width=7, fig.height=6}
+plot(cars)
+```
+
+
+```{r}
+#show summary of data
+summary(mtcars)
+
+#store in efficient the Subset the data to cars that get 23 or more mpg
+efficient <- subset (mtcars, mpg >= 23)
+
+#number of cars taht  get more than 23 mpg
+dim (efficient)[1]
+
+
+#subset car(s) that get greater than 30 mpg and have more than 100 raw horsepower.
+subset(mtcars, mpg > 30 & hp > 100)
+
+#subset car(s) that get less than 14 mpg or have less more than 390 raw horsepower.
+subset(mtcars, mpg < 14 | disp > 390)
+
+# cars that have a 1/4 mile time (qsec) less than or equal to 16.90 seconds to the console.
+subset(mtcars, qsec < (16.90+0.25) & qsec > (16.90-0.25) )
+
+# Save the subset of cars that weigh under 2000 pounds (weight is measured in lb/1000) to a variable called lightCars. Print the numbers of cars and the subset to the console.
+lightCars <- subset (mtcars, wt < 2)
+dim (lightCars)[1]
+lightCars
+
+#Create new variables in a data frame (add year)
+#assume that all of the models were from 1974.
+mtcars$year <- 1974
+
+#remove variable
+mtcars <- subset(mtcars, select = -year)
+#Notice, we are back to 11 variables in the data frame.
+
+#set years 1973 and 1974 alternating
+mtcars$year <- c(1973, 1974)
+
+#remove again
+mtcars <-subset (mtcars, select = -year)
+
+#check if the car weight is less than 3
+mtcars$wt
+cond <- mtcars$wt < 3
+cond
+
+#using ifelse
+
+#if true, then set to light
+mtcars$weight_class <- ifelse(cond, 'light', 'average')
+mtcars$weight_class
+
+#check if the car weight is greater than 3.5
+cond <- mtcars$wt > 3.5
+
+#if true then set to heavy
+mtcars$weight_class <- ifelse(cond, 'heavy', mtcars$weight_class)
+mtcars$weight_class
+
+#remove individual environment variables
+rm(cond)
+rm(efficient)
+
+```
+
+
+Quiz: Which car(s) have an mpg (miles per gallon) greater than or equal to 30
+OR hp (horsepower) less than 60? Create an R chunk of code to answer the question.
+
+Solution:
+```{r}
+solution<-subset(mtcars, mpg >= 30 | hp < 60)[0]
+```
+
+
+### <a name="E5"></a>Example 5: Factor Variables
+Reference:   
+Data type: http://www.statmethods.net/input/datatypes.html   
+Reddit Data: http://www.redditblog.com/2011/09/who-in-world-is-reddit-results-are-in.html   
+
+Learn to use: factors, table, rearrange table
+
+
+```{r}
+#Reset the workspace
+rm(list = ls(all = TRUE)) 
+
+#Read reddit data
+reddit <- read.csv ('reddit.csv')
+
+#summary of data
+summary(reddit)
+
+#Check the structure and notice factors
+str(reddit)
+
+#table specific factor (employment status)
+table(reddit$employment.status)
+
+```
+
+
+```{r}
+#plot the age of users
+levels(reddit$age.range)
+
+#use the ggplot library
+library(ggplot2)
+
+
+```
+
+
+Plot:
+
+```{r fig.width=7, fig.height=6}
+qplot(data=reddit, x=age.range)
+```
+
+Notice how the x variables on the plot are out of order for Under 18.
+
+Reorder the variables:
+
+Reference: http://statistics.ats.ucla.edu/stat/r/modules/factor_variables.htm
+
+```{r}
+reddit$age.range <- ordered(reddit$age.range, levels = c("Under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65 or Above"))
+```
+
+Plot:
+
+```{r fig.width=7, fig.height=6}
+qplot(data=reddit, x=age.range)
+```
+
+Alternate Solution:
+
+```{r}
+reddit$age.range <- factor(reddit$age.range, levels = c("Under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65 or Above"), ordered = T)
+```
+
+Plot:
+
+```{r fig.width=7, fig.height=6}
+qplot(data=reddit, x=age.range)
+```
+
+# CONGRATULATIONS
+#### You'll be exploring data soon with your new knowledge of R.
+
+***
+## <a name="Appendix"></a>Appendix
+
+### Dealing with untidy data: Learn data wrangling
+https://www.udacity.com/course/ud032   
+Tidy Data by Hadley Wickham:   
+http://courses.had.co.nz.s3-website-us-east-1.amazonaws.com/12-rice-bdsi/slides/07-tidy-data.pdf   
+Tidy Data Presentation by Hadley Whickman (June 2012)   
+http://vita.had.co.nz/papers/tidy-data.pdf   
+
+***
+
+### R Markdown    
+
+Code to install knitr for markdown:   
+
+install.packages('knitr', dependencies = T)   
+library(knitr)   
+
+Intro Video:   
+https://www.youtube.com/watch?v=6A5EpqqDOdk   
+Cheat Sheets:      
+Help->Markdown Quick Reference   
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet      
+http://warpedvisions.org/projects/markdown-cheat-sheet.md      
+
+Hooks for creating PDF, MS Word etc:    
+https://github.com/rstudio/rmarkdown
+
+Code to install
+install.packages("devtools")    
+devtools::install_github("rstudio/rmarkdown")
+
+
+
+### Free R Resources and Help 
+http://tryr.codeschool.com/   
+https://www.datacamp.com/   
+http://www.statmethods.net/  
+http://www.cookbook-r.com/  
+http://www.r-bloggers.com/  
+http://stackoverflow.com/tags/r/info  
+http://stackoverflow.com/questions/tagged/r-faq%20  
+
+***
