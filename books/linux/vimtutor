@@ -1,0 +1,63 @@
+#Chapter 1
+
+
+Append:
+
+i insert text 
+I inesrt beginning of line
+A append after the line
+a append after cursor
+
+#Chapter 2
+
+dw delete from cursor to next word
+d$ detete from cursor to end of line
+dd delete whole line
+
+to repeat a motion, append with number
+
+format for change command:
+operator [number] motion
+ie d2$
+delete 2 till end of lin
+
+0 to move to start of line
+
+u undo
+U undo all changes on a line
+CTRL-R redo
+
+
+#Chapter 3
+p put back deleted text
+r replace character under cursor
+c change from cursor
+c [number] motion
+c2e
+change from cursor to end of second word
+
+#Chapter 4
+CTRL-G displays location
+G moves to end of file
+number G moves to that file number
+GG moves to the first line
+
+
+/ then phrse searches forward
+? then phrase searches backward
+after search hit n for next
+or hit N for previous
+
+CTRL-O takes you to older positions
+CTRL-I takes you to newer positions
+
+% takes you to the bracket match
+
+To substitute new for the first old in a line type    :s/old/new               
+To substitute new for all 'old's on a line type       :s/old/new/g             
+To substitute phrases between two line #'s type       :#,#s/old/new/g          
+To substitute all occurrences in the file type        :%s/old/new/g            
+To ask for confirmation each time add 'c'             :%s/old/new/gc 
+
+
+
