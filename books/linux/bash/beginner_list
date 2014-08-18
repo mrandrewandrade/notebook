@@ -1,0 +1,55 @@
+cd
+cat
+echo
+ls
+mkdir
+man
+exit
+login
+mkdir
+ssh
+shutdown
+shutdown -h
+poweroff
+shutdown -r
+which locate programs
+whereis similar to which but broader list
+pwd
+cd
+cd ..
+cd ~/
+cd /
+cd - change to previous directo
+absolute vs relative parts
+tree
+tree -d
+ln file1 file2 hardlinks
+ln -s file1 file2 soft or symbolic links 
+ls -i displays the inode number
+pushd pushes directory onto a list
+popd pushes send you back to director
+dir display list of directories on stack
+
+#Standard File Streams
+
+file streams of descriptors to use:
+
+standard input (stdin)
+standard output (stdout)
+standard error (stderr)
+I/O Redirection
+Inputs:
+$ do_something < input-file
+
+Outputs:
+$ do_something > output-file
+
+pipes
+|
+
+locate long search
+grep
+
+
+
+j 
