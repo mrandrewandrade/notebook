@@ -77,119 +77,119 @@ http://tldp.org/HOWTO/LVM-HOWTO/index.html
 
 Step 1: Partition the disk
 
-# Determine the path to the drive:
+Determine the path to the drive:
 
 	sudo lshw -C disk
 
-# List of drives and information:
+List of drives and information:
 
 	sudo fdisk -l
 
-#fdisk is only useful if your partition is under 2TB.  MBR partition only supports 4 primary partitions per hard drive, and a maximum partition size of 2TB. To solve this we use parted and use gpt.
+fdisk is only useful if your partition is under 2TB.  MBR partition only supports 4 primary partitions per hard drive, and a maximum partition size of 2TB. To solve this we use parted and use gpt.
 
-#For this example I am going to use /dev/sda as the mount point
+For this example I am going to use /dev/sda as the mount point
 
 	sudo parted /dev/sda
 
-#Step 2: We are now going to make the partitions:
+Step 2: We are now going to make the partitions:
 
 	mkpart ext4 1MiB 100%
-#Since the partition is on the first slot:
+Since the partition is on the first slot:
 	set 1 lvm on
-#Now we prepare our new partitions (physical volume) for LVM:
+Now we prepare our new partitions (physical volume) for LVM:
 
 	pvcreate /dev/sda1
 
-#To display what we just did:
+To display what we just did:
 
 	pvdisplay
 
-#To delete a pysical volume
+To delete a pysical volume
 
 	pvremove /dev/sda1
 
-#Step 3: create a volume group
+Step 3: create a volume group
 
 vgcreate name /dev/sda1
 
-#to display volume groups:
+to display volume groups:
 	vgdisplay
 
-#to scan volumes
+to scan volumes
 	vgscan
 
-#to rename
+to rename
 	vgrename fileserver data
 
-#to delete
+to delete
 
 	vgremove data
 
-#Step 4: create a logical group
+Step 4: create a logical group
 
 	lvcreate --name share --size 40G fileserver
 
 	lvcreate --name media --size 5G fileserver
 
-#display logical volume
+display logical volume
 	lvdisplay
 
-#scan logical volumes
+scan logical volumes
 	lvscan
 
-#rename
+rename
 
 	lvrename fileserver media films
 
 
-#Delete lv
+Delete lv
 
 	lvremove /dev/fileserver/films
 
-#extend logical volumes
+extend logical volumes
 	lvextend -L40.5G /dev/fileserver/share
 
-#shrink the volume
+shrink the volume
 	lvreduce -L40G /dev/fileserver/share
 
 
-#Step 5: create a file system
+Step 5: create a file system
 	mkfs.ext3 /dev/fileserver/share
 
 
-#Step 6: Mount the volumes
+Step 6: Mount the volumes
 	mkdir /var/share /var/backup /var/share
 
-#Step 7: View logial volumes
+Step 7: View logial volumes
 
 df -h
 
-#Step 8: Mount when system boots:
+Step 8: Mount when system boots:
 
-#backup fstab
+backup fstab
 
 	cp /etc/fstab /etc/fstab_orig
 	cat /dev/null > /etc/fstab
 
-#Edit the file:
+Edit the file:
 
 	vi /etc/fstab
 
-#add this:
-/dev/fileserver/share   /var/share     ext3       rw,noatime    0 0
-/dev/fileserver/backup    /var/backup      xfs        rw,noatime    0 0
-/dev/fileserver/media    /var/media      reiserfs   rw,noatime    0 0
+add this:
+	/dev/fileserver/share   /var/share     ext3       rw,noatime    0 0
+	/dev/fileserver/backup    /var/backup      xfs        rw,noatime    0 0
+	/dev/fileserver/media    /var/media      reiserfs   rw,noatime    0 0
 
 
-#Step 9: Reset system and enjoy
+Step 9: Reset system and enjoy
 
 
 7) SSH from linux:
 
-#Generate your SSH key and share the public key, and add to the authorized_keys in the .ssh folder
+Generate your SSH key and share the public key, and add to the authorized_keys in the .ssh folder
 
-# SSH from a non standard port
-ssh -p 543 user@example.com
+SSH from a non standard port
+	ssh -p 543 user@example.com
 
 8) Rsync and transfer files
 rsync -av --progress --rsh 'ssh -543' user@example.com:/source /var/destination 
