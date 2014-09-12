@@ -1,0 +1,44 @@
+Objects/atomic classes:
+
+- character
+- numeric
+- integer
+- complex
+- logical (true/false)
+
+Vectors: only contain the same class
+
+List: a vector can contain objects of different classes
+
+Empty Vector: use vecton()
+
+##Numbers
+
+- Numeric objects
+- Integer specify the L suffix
+- ie 1L gives an integer while 1 gives numeric
+- Inf represent infinity
+- NaN represent missing values
+
+## Attributes
+- names and dimnames
+- dimentions(matrix, arrays)
+- class
+- length
+- metadata
+
+##Entering Input
+
+Entering things in the R prompt
+<-- Assignment operator
+print() prints value
+# comments 
+
+c() <- concatinate
+
+## Mixing objects
+R takes the least common demoninator
+
+##Explicit Coercin
+
+

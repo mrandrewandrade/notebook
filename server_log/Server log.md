@@ -194,3 +194,52 @@ SSH from a non standard port
 8) Rsync and transfer files
 rsync -av --progress --rsh 'ssh -543' user@example.com:/source /var/destination 
 
+9) Now that I have the files uploaded and everything set up, I wanted to secure the filesystem so only my user has access.
+
+I want to remove read and write access to everyone except me, so I an the follow command:
+
+sudo chmod -r o-rwx foldername
+
+This changes the permisisons recurssively (all files and folders) and removes (-) Read Write and eXicute access to folder from others (so only my user and group has access)
+
+10) Adding alias
+To create an alias permanently add the alias to your .bashrc file
+
+Now execute . ~/.bashrc in your terminal (there should be a gap between the . and ~/.bashrc.
+
+11) LXC
+LinuX Containers - lightweight virtualization isolate processes and resources
+
+Guide:
+help.ubuntu.com/community/LXC
+One of the main focus for Ubuntu LTS was to make LXC dead easy to use, to achieve this. Creating a basic container and starting it on Ubuntu
+
+	sudo apt-get install lxc
+
+Check Kernel  configuration:
+	lxc-checkconfig
+Create a container
+	sudo lxc-create -t ubuntu -n my-containeri
+Check container:
+	ls --fancy
+Start container
+	sudo lxc-start -n my-container
+Login into container:
+	sudo lxc-console -n my-container -t 1
+Exit to host:
+	Type ctr-A followed by Q
+Note you want to change the default username and password
+
+### LXC Web Panel
+
+	sudo apt-get install lxc debootstrap bridge-utils -y
+	sudo su
+	wget http://lxc-webpanel.github.com/tools/install.sh -O - | bash
+
+Now that you played with it via commandline and you know how, you can now 
+Installing services is the same as usual
+
+
+
+https://www.digitalocean.com/community/tutorials/getting-started-with-lxc-on-an-ubuntu-13-04-vps
+
