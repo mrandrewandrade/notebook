@@ -1,7 +1,7 @@
 ---
-title: "R Programming Cousera Notes"
-author: "Andrew Andrade (andrew *at* andrewandrade.ca)"
-date: "17/9/2014"
+title: "R Programming Basics"
+author: "A Reference by Andrew Andrade (andrew@andrewandrade.ca)"
+date: "Last Updated: March 29, 2015"
 output:
   html_document:
     highlight: tango
@@ -10,17 +10,11 @@ output:
     toc: yes
   word_document:
     highlight: tango
-School: Johns Hopkins University
+
 ---
 
-Professor: Roger D. Peng, PhD, Jeff Leek, PhD, Brian Caffo, PhD  
-Johns Hopkins University 
-
-##various functions
-rnorm  
-sample  
-print () prints values
-identical(vect, vect2)
+##Introduction
+This documents serves as a reference sheet with example for the basics of R programming. It is more of brain dump of functions and examples I find to be useful.
 
 
 # Data Types and Basic Operations
@@ -29,10 +23,10 @@ identical(vect, vect2)
 ## Basic Operators
 `+` `-` `*` `/`
 
-### Logical
+### Logical Operators
 `<` `<=` `>` `>=` `==` `!=` `|` `&`
 
-### Assignment
+### Assignment Operators
 
 `<-` is the assignment operator
 
@@ -437,6 +431,9 @@ x[is.na(x)]
 
 x[!is.na(x)]
 
+x[is.na(x)] <-0
+
+
 ```
 
 ### Subset with no missing values
@@ -448,6 +445,11 @@ good <- complete.cases(x, y)
 good
 x[good]
 y[good]
+```
+### Set all NA to zeros
+
+```{r}
+
 ```
 
 
@@ -690,7 +692,8 @@ Control structures in R allow you to control the flow of execution of the progra
 
 ## if
 
-```{r}
+Example of how to use if:
+
 if(<condition1>) {
         ## do something
 } else if(<condition2>)  {
@@ -698,7 +701,7 @@ if(<condition1>) {
 } else {
         ## do something different
 }
-```
+
 
 ### Setting variables using if
 
@@ -807,3 +810,10 @@ for(i in 1:100) {
 
 
 ## lapply and sapply
+
+
+## Functions to add:
+rnorm  
+sample  
+print () prints values
+identical(vect, vect2)

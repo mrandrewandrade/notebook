@@ -1,0 +1,226 @@
+---
+title: "IE2140 Assignment 4"
+author: "Andrew Andrade (andrew@andrewandrade.ca)"
+date: "Wednesday, April 01, 2015"
+output: word_document
+---
+
+
+```{r, echo=FALSE}
+  library(FinCal)
+
+  #[F/P,i%,N]
+  FP <- function(interest_rate, number_periods) {
+    factor<- fv(interest_rate/100,number_periods,-1,0,0)    
+    return(factor)
+    }
+#[P/F,i%,N]
+  PF <- function(interest_rate, number_periods) {
+    factor<- pv(interest_rate/100,number_periods,-1,0,0)
+    return(factor)
+    }
+
+#[F/A, i%, N]
+  FA <- function(interest_rate, number_periods) {
+    factor<- fv(interest_rate/100,number_periods,0,-1,0)
+    return(factor)
+    }
+
+#[A/F, i%, N],
+  AF <- function(interest_rate, number_periods) {
+    factor<- pmt(interest_rate/100,number_periods,0,-1,0)
+    return(factor)
+    }
+
+
+#[P/A, i%, N],
+  PA <- function(interest_rate, number_periods) {
+    factor<- pv(interest_rate/100,number_periods,0,-1,0)
+    return(factor)
+    }
+
+
+#[A/P, i%, N],
+  AP <- function(interest_rate, number_periods) {
+    factor<- pmt(interest_rate/100,number_periods,-1,0,0)
+    return(factor)
+    }
+
+#[F/G, i%, N]
+  FG <- function(interest_rate, number_periods) {
+    factor<- 100*(FA(interest_rate,number_periods)-number_periods)/interest_rate
+    return(factor)
+    }
+
+#[P/G, i%, N
+  PG <- function(interest_rate, number_periods) {
+    factor<- FG(interest_rate, number_periods)*PF(interest_rate, number_periods)
+    return(factor)
+    }
+
+#[A/G, i%, N]
+  AG <- function(interest_rate, number_periods) {
+    factor<- AF(interest_rate, number_periods)*FG(interest_rate, number_periods)
+    return(factor)
+    }
+
+
+defender <- data.frame (
+  year = c(0:4),
+  MVd = c(35000,25000,21000, 17000, 13000),
+  OMd = c(NA,18500, 21000, 23500, 26000)
+  )
+challenger <- data.frame(
+  year = c(0:4),
+  MVd = c(50000,40000,32000,24000,16000),
+  OMd = c(NA,13000,15500,18000,20500)
+  )
+
+
+input <- data.frame(
+  year = c(0:4),
+  MVd = c(30000,22500,16875,12750,9750),
+  OMd = c(NA,3000,4500,7000,10000)
+  )
+
+
+#[A/G, i%, N]
+
+#equipment_life (k)
+#marr (i%)
+  EAC <- function(k, marr, data_input) {
+    jjj<-1;
+    ejsum <-0;
+    while(jjj <= k) {
+        ejsum <- ejsum + PF(marr, jjj)*data_input$OMd[1+jjj]
+        jjj<- jjj + 1
+    }
+    result = AP(marr,k)*(data_input$MVd[1]-data_input$MVd[1+k]*PF(marr,k)+ejsum)
+    
+    return (result)
+    }
+
+```
+
+Given the following information:
+
+
+```{r}
+
+defender
+
+challenger
+
+```
+
+###a) Determine the economic life of the challenger
+
+
+```{r}
+marr<-10
+EACc <- c(1:(nrow(challenger)-1))
+
+for (i in seq_len(nrow(challenger)-1))
+{ 
+  EACc[i] <- EAC(i,marr,challenger)
+}
+
+challenger[,"EAC"] <-  c(NA,EACc)
+
+min(challenger['EAC'],na.rm = TRUE)
+
+print (challenger)
+
+
+challenger[challenger$EAC==min(challenger['EAC'],na.rm = TRUE),]
+
+
+```
+
+Since the EAC in year 2 for the challenger is the lowest at $27761.90, the economic life of the challenger is 2 years.
+
+###b) Determine when the defender should be replaced
+
+EAC for the defender:
+
+```{r}
+marr<-10
+EACc <- c(1:(nrow(defender)-1))
+
+for (i in seq_len(nrow(defender)-1))
+{ 
+  EACc[i] <- EAC(i,marr,defender)
+}
+
+defender[,"EAC"] <-  c(NA,EACc)
+
+min(defender['EAC'],na.rm = TRUE)
+
+print (defender)
+
+
+defender[defender$EAC==min(defender['EAC'],na.rm = TRUE),]
+
+
+```
+
+Since the minimum EAC is 29779.46 at year 3, the economic life of the defender is 3 years.
+
+The minimum EAC of the challenger is $27761.90 which is less than $29779.46, the defender should be replaced immediately.
+
+##Question 2:
+
+a) 
+Cost function:
+
+> C = 6X + 9
+
+Selling Price:
+
+>P = 30 -3X
+
+where X is the number of microprocessors.
+
+>Total Revenue (TR) = X * P
+> = 30x + x^2
+
+dTR/dx = 30 -6x
+
+When dTR/dx = 0, x=5
+
+Therefore maximum demand (max revenue) is when x = 5.
+
+>Total cost (TC) = 6x + 9
+
+Profit = TR - TC
+
+30x - 3X^2 - 6x - 9
+
+dProfit/dx = 24 - 6x
+
+When  dProfit/dx = 0, X =4
+
+Therefore the optimum demand for maximum profit is when x = 4
+
+b) Max profit = 3X^2 + 24x -9
+
+When x = 4
+
+```{r}
+-3*(4^2) + 24 * 4 -9
+```
+Max Profit = 39
+
+###c) Break even is when TR= TC
+
+6X + 9 = 30 -3X^2
+-3x^2 + 24x -9 =0
+X = 7.61 or X = 0.394
+
+Since the max production is 5000 units (x=5), break even occurs when x = 0.394
+
+###d) Profitable demand
+
+Profitable demand occurs when 0.394 < x < 5
+
+

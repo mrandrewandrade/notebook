@@ -1,0 +1,48 @@
+---
+title: 'Optimizing Vacant Housing Space: Selling, Renting or, Airbnbing'
+author: "Andrew Andrade (andrew@andrewandrade.ca)"
+date: "Sunday, March 29, 2015"
+output: word_document
+---
+
+ Optimizing Vacant Housing Space: Selling, Renting or, Airbnbing?
+
+
+
+```{r, echo=FALSE}
+
+library(ggplot2)
+library(grid)
+library(financial)
+
+cash_flow1 <- data.frame(time=c(0:120), positive=(NA), negative=(NA))
+
+
+cash_flow1$positive[1] <- 2200000
+cash_flow1$positive[2:121] <- 30250
+cash_flow1$positive[121] <- cash_flow1$positive[121]+2200000
+cash_flow1$negative[1]<- -2200000
+
+
+ggplot(cash_flow1, aes(time, xend = time)) + 
+  geom_segment(aes(y = 0, yend = positive, colour = "positive"),
+    position = "stack", arrow = arrow()) + 
+  geom_segment(aes(y = 0, yend = negative, colour = "negative"), 
+    position = "stack", arrow = arrow()) + 
+  scale_colour_manual("Direction", 
+    values = c("negative" = "red", "positive" = "black"))
+
+
+cash_flow1[is.na(cash_flow1)] <-0
+
+net_cash_flow1 = cash_flow1$positive + cash_flow1$negative;
+y= cf(net_cash_flow1, 0.03)
+summary(y)
+y
+plot (y)
+
+
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
