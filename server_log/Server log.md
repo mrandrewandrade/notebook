@@ -243,3 +243,5 @@ Installing services is the same as usual
 
 https://www.digitalocean.com/community/tutorials/getting-started-with-lxc-on-an-ubuntu-13-04-vps
 
+### Creditials on the csclub
+kinit -p
