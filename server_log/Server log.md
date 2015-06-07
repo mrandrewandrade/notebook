@@ -245,3 +245,7 @@ https://www.digitalocean.com/community/tutorials/getting-started-with-lxc-on-an-
 
 ### Creditials on the csclub
 kinit -p
+
+### RStudio Server on csclub
+
+ssh  -L 8080:localhost:8787 high-fructose-corn-syrup.csclub.uwaterloo.ca
