@@ -249,3 +249,10 @@ kinit -p
 ### RStudio Server on csclub
 
 ssh  -L 8080:localhost:8787 high-fructose-corn-syrup.csclub.uwaterloo.ca
+
+
+### Recursively auto indent in vim
+:args ~/src/myproject/**/*.file_type | argdo execute "normal gg=G" | update
+
+
+
